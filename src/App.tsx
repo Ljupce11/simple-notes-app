@@ -1,9 +1,15 @@
+import { Route, Routes } from "react-router";
+
+import { Home } from "./pages/Home";
+
 function App() {
   return (
-    <>
-      <p className="text-3xl font-bold text-center text-blue-500">Simple notes app</p>
-    </>
-  )
+    <div className="h-screen bg-blue-100 p-10">
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+export default App;

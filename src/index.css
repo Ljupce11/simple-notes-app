@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 html {
-  background-color: var(--color-blue-100);
+  background-color: var(--color-gray-200);
 }
 
 :root {

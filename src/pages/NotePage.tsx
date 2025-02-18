@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 
 import { useNotes } from "../hooks/useNotes";
 
-const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrlWithSession = import.meta.env.VITE_API_URL_WITH_SESSION;
 
 export const NotePage = () => {
   const { id } = useParams();
@@ -22,10 +22,11 @@ export const NotePage = () => {
     const cachedNote = getNote(noteId);
     if (cachedNote) {
       setNoteBody(cachedNote.body);
+      setIsLoading(false);
     } else {
       const fetchNote = async () => {
         try {
-          const response = await fetch(`${apiUrl}/notes/${noteId}`);
+          const response = await fetch(`${apiUrlWithSession}/notes/${noteId}`);
           if (!response.ok) {
             throw new Error("Failed to fetch note");
           }
@@ -49,7 +50,7 @@ export const NotePage = () => {
     async (body: string) => {
       try {
         setIsSaving(true);
-        const response = await fetch(`${apiUrl}/notes/${id}`, {
+        const response = await fetch(`${apiUrlWithSession}/notes/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

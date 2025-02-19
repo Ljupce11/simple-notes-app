@@ -1,86 +1,21 @@
-import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 
-import { useNotes } from "../hooks/useNotes";
-
-const apiUrlWithSession = import.meta.env.VITE_API_URL_WITH_SESSION;
+import { MentionTextarea } from "../components/MentionTextarea";
+import { useDebounce } from "../hooks/useDebounce";
+import { useFetchSingleNote } from "../hooks/useFetchSingleNote";
+import { useSaveNote } from "../hooks/useSaveNote";
 
 export const NotePage = () => {
   const { id } = useParams();
-  const { getNote } = useNotes();
-  const [noteBody, setNoteBody] = useState("");
-  const [isSaving, setIsSaving] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState({
-    getNote: "",
-    updateNote: "",
-  });
-  const debounceRef = useRef<number | null>(null);
+  const { noteBody, setNoteBody, isLoading, fetchNoteError } =
+    useFetchSingleNote(id);
+  const { saveNote, isSaving, error: saveError } = useSaveNote(id);
 
-  useEffect(() => {
-    const noteId = Number(id);
-    const cachedNote = getNote(noteId);
-    if (cachedNote) {
-      setNoteBody(cachedNote.body);
-      setIsLoading(false);
-    } else {
-      const fetchNote = async () => {
-        try {
-          const response = await fetch(`${apiUrlWithSession}/notes/${noteId}`);
-          if (!response.ok) {
-            throw new Error("Failed to fetch note");
-          }
-          const data = await response.json();
-          setNoteBody(data.body);
-        } catch (error) {
-          console.error("Failed to fetch note:", error);
-          setError((prev) => ({
-            ...prev,
-            getNote: "Failed to fetch note",
-          }));
-        } finally {
-          setIsLoading(false);
-        }
-      };
-      fetchNote();
-    }
-  }, [getNote, id]);
+  const debouncedUpdateNote = useDebounce(saveNote, 1000);
 
-  const updateNote = useCallback(
-    async (body: string) => {
-      try {
-        setIsSaving(true);
-        const response = await fetch(`${apiUrlWithSession}/notes/${id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ body }),
-        });
-        if (!response.ok) {
-          throw new Error("Failed to update note");
-        }
-      } catch (error) {
-        console.error("Failed to update note:", error);
-        setError((prev) => ({
-          ...prev,
-          updateNote: "Failed to update note",
-        }));
-      } finally {
-        setIsSaving(false);
-      }
-    },
-    [id],
-  );
-
-  const handleNoteBodyChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setNoteBody(e.target.value);
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-    debounceRef.current = setTimeout(() => {
-      updateNote(noteBody);
-    }, 1000);
+  const handleNoteBodyChange = (value: string) => {
+    setNoteBody(value);
+    debouncedUpdateNote(value);
   };
 
   if (isLoading) {
@@ -91,10 +26,10 @@ export const NotePage = () => {
     );
   }
 
-  if (error.getNote) {
+  if (fetchNoteError) {
     return (
       <div className="flex flex-col gap-4 bg-red-200 p-4 rounded-lg max-w-2xl mx-auto">
-        <p className="text-red-800">{error.getNote}</p>
+        <p className="text-red-800">{fetchNoteError}</p>
       </div>
     );
   }
@@ -102,18 +37,11 @@ export const NotePage = () => {
   return (
     <div className="flex flex-col gap-4 bg-white p-4 rounded-lg max-w-2xl mx-auto">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Note title</h1>
+        <h1 className="text-2xl font-bold">Edit note</h1>
         {isSaving && <p className="text-sm text-gray-500">Saving...</p>}
-        {error.updateNote && (
-          <p className="text-sm text-red-500">{error.updateNote}</p>
-        )}
+        {saveError && <p className="text-sm text-red-500">{saveError}</p>}
       </div>
-      <textarea
-        rows={10}
-        className="w-full h-full resize-none border-2 border-gray-300 rounded-lg p-2"
-        value={noteBody}
-        onChange={handleNoteBodyChange}
-      />
+      <MentionTextarea value={noteBody} onChangeValue={handleNoteBodyChange} />
     </div>
   );
 };

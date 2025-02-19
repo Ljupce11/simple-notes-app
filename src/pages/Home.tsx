@@ -1,66 +1,22 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
-import { useNotes } from "../hooks/useNotes";
+import { MentionTextarea } from "../components/MentionTextarea";
+import { useCreateNote } from "../hooks/useCreateNote";
+import { useFetchNotes } from "../hooks/useFetchNotes";
 
-// const apiUrl = import.meta.env.VITE_API_URL;
-const apiUrlWithSession = import.meta.env.VITE_API_URL_WITH_SESSION;
 export const Home = () => {
-  const { notes, updateAllNotes } = useNotes();
-  const [isLoading, setIsLoading] = useState(notes.length === 0);
-  const [isCreatingNote, setIsCreatingNote] = useState(false);
-  const [newNoteBody, setNewNoteBody] = useState("");
+  const { notes, isFetchingNotes } = useFetchNotes();
+  const { newNoteBody, setNewNoteBody, isCreatingNote, error, createNote } =
+    useCreateNote();
 
-  useEffect(() => {
-    const fetchNotes = async () => {
-      try {
-        const response = await fetch(`${apiUrlWithSession}/notes`);
-        // const response2 = await fetch(`${apiUrl}/users`);
-        // console.log(response2);
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch notes");
-        }
-        const data = await response.json();
-        updateAllNotes(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchNotes();
-  }, [updateAllNotes]);
-
-  const handleCreateNote = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      setIsCreatingNote(true);
-      const newNote = {
-        body: newNoteBody,
-      };
-      const response = await fetch(`${apiUrlWithSession}/notes`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newNote),
-      });
-      const data = await response.json();
-      updateAllNotes([...notes, data]);
-      setNewNoteBody("");
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsCreatingNote(false);
-    }
+  const handleChangeNewNoteBody = (value: string) => {
+    setNewNoteBody(value);
   };
 
-  if (isLoading) {
+  if (isFetchingNotes) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <p className="text-2xl">Loading...</p>
+        <p className="text-2xl">Fetching notes...</p>
       </div>
     );
   }
@@ -70,18 +26,14 @@ export const Home = () => {
       <p className="text-3xl font-bold text-center">My notes</p>
       <div className="flex justify-center">
         <div className="w-xl bg-white shadow-md rounded-lg p-4">
-          <form className="flex flex-col gap-4" onSubmit={handleCreateNote}>
-            <textarea
-              id="new-note-body"
-              name="new-note-body"
-              aria-label="New note body"
-              placeholder="Enter your note here..."
-              className="border border-gray-300 rounded-lg w-full h-32 p-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          <form className="flex flex-col gap-4" onSubmit={createNote}>
+            <MentionTextarea
+              rows={5}
               disabled={isCreatingNote}
               value={newNoteBody}
-              required
-              onChange={(e) => setNewNoteBody(e.target.value)}
+              onChangeValue={handleChangeNewNoteBody}
             />
+            {error && <p className="text-red-500">{error}</p>}
             <button
               type="submit"
               className="bg-black text-white px-4 py-2 rounded-lg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"

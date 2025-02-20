@@ -1,5 +1,6 @@
 import { type ReactNode, useState } from "react";
 
+import type { UsersContextType } from "../interfaces/interfaces";
 import { UsersContext } from "./UsersContext";
 
 interface UserProviderProps {
@@ -7,7 +8,7 @@ interface UserProviderProps {
 }
 
 export function UsersProvider({ children }: UserProviderProps) {
-  const [users, setUsers] = useState<string[]>([]);
+  const [users, setUsers] = useState<UsersContextType["users"]>([]);
 
   const value = {
     users,

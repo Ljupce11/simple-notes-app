@@ -1,9 +1,6 @@
 import { createContext } from "react";
 
-export interface UsersContextType {
-  users: string[];
-  setUsers: (users: string[]) => void;
-}
+import type { UsersContextType } from "../interfaces/interfaces";
 
 export const UsersContext = createContext<UsersContextType | undefined>(
   undefined,

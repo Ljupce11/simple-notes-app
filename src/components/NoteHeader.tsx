@@ -3,10 +3,10 @@ import { Link } from "react-router";
 
 import { ChevronLeftIcon } from "../icons/ChevronLeftIcon";
 
-type Props = {
+interface Props {
   isSaving: boolean;
   saveError: string;
-};
+}
 
 export const NoteHeader = memo(({ isSaving, saveError }: Props) => {
   return (

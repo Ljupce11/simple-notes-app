@@ -3,9 +3,9 @@ import { memo } from "react";
 import type { Note } from "../interfaces/interfaces";
 import { NoteCard } from "./NoteCard";
 
-type Props = {
+interface Props {
   notes: Note[];
-};
+}
 
 export const NotesList = memo(({ notes }: Props) => {
   return (

@@ -1,6 +1,7 @@
 import { type ReactNode, useCallback, useState } from "react";
 
-import { NotesContext, type NotesContextType } from "./NotesContext";
+import type { NotesContextType } from "../interfaces/interfaces";
+import { NotesContext } from "./NotesContext";
 
 export function NotesProvider({ children }: { children: ReactNode }) {
   const [notes, setNotes] = useState<NotesContextType["notes"]>([]);

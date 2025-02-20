@@ -3,12 +3,12 @@ import { useRef } from "react";
 import { useMentionDropdown } from "../hooks/useMentionDropdown";
 import { StyledNoteValue } from "./StyledNoteValue";
 
-type Props = {
+interface Props {
   rows?: number;
   disabled?: boolean;
   value: string;
   onChangeValue: (value: string) => void;
-};
+}
 
 export const MentionTextarea = ({
   rows = 10,

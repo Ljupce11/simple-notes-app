@@ -1,50 +1,82 @@
-# React + TypeScript + Vite
+# Notes Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple note-taking application built with React, TypeScript, and Vite that supports real-time saving and @mention functionality.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Add and edit notes with real-time saving
+- @mention functionality with user suggestions
+- Responsive grid layout for notes display
+- Clean and modern UI with Tailwind CSS
+- Client-side routing with React Router
 
-## Expanding the ESLint configuration
+## Technology Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS
+- React Router
+- Biome (for linting and formatting)
+- SWC (for fast compilation)
 
-- Configure the top-level `parserOptions` property like this:
+## Prerequisites
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- Node.js (v18 or higher)
+- npm (v9 or higher)
+
+## Getting Started
+
+1. Clone the repository:
+```bash
+git clone [repository-url]
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+2. Install dependencies:
+```bash
+npm install
 ```
+
+3. Create a `.env` file in the root directory with the following variables:
+```
+VITE_API_URL=your_api_url
+VITE_API_SESSION=your_api_session_key
+```
+
+4. Start the development server:
+```bash
+npm run dev
+```
+
+## Available Scripts
+
+- `npm run dev` - Starts the development server
+- `npm run build` - Creates a production build
+- `npm run lint` - Runs Biome linter
+- `npm run format` - Formats code using Biome
+- `npm run tsc` - Runs TypeScript compiler
+
+## Project Structure
+
+```
+src/
+  ├── components/     # UI components
+  ├── context/       # React context providers
+  ├── hooks/         # Custom React hooks
+  ├── icons/         # SVG icons components
+  ├── interfaces/    # TypeScript interfaces
+  ├── pages/         # Route components
+  ├── services/      # API service functions
+```
+
+## Features in Detail
+
+### Real-time Note Saving
+- Automatic saving with debounce functionality
+- Visual feedback during save operations
+- Error handling and display
+
+### @mentions System
+- User mention suggestions while typing
+- Keyboard navigation support
+- Highlighted mention styling

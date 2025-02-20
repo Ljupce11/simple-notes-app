@@ -1,5 +1,7 @@
 import { useRef } from "react";
+
 import { useMentionDropdown } from "../hooks/useMentionDropdown";
+import { StyledNoteValue } from "./StyledNoteValue";
 
 type Props = {
   rows?: number;
@@ -30,7 +32,10 @@ export const MentionTextarea = ({
   );
 
   return (
-    <>
+    <div className="relative">
+      <div className="absolute top-0 left-0 w-full h-full z-1 p-2 font-normal text-transparent bg-white pointer-events-none whitespace-pre-wrap">
+        <StyledNoteValue value={value} />
+      </div>
       <textarea
         required
         rows={rows}
@@ -41,17 +46,17 @@ export const MentionTextarea = ({
         name="note-body"
         aria-label="Note body"
         placeholder="Enter your note here..."
-        className="border border-gray-300 rounded-lg w-full p-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="relative p-2 bg-transparent font-normal border border-gray-300 rounded-lg w-full z-2 disabled:opacity-50 disabled:cursor-not-allowed"
         onChange={handleChange}
         onKeyDown={handleKeyDown}
       />
       {showDropdown && (
         <ul
           style={{
-            top: caretPosition.top + 10,
+            top: caretPosition.top,
             left: caretPosition.left,
           }}
-          className="absolute shadow-md bg-white rounded-lg border border-gray-300 mt-2 overflow-x-hidden z-1000"
+          className="absolute shadow-md bg-white rounded-lg border border-gray-300 mt-4 overflow-x-hidden z-1000"
         >
           {filteredUsers.map((user, index) => (
             // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
@@ -65,6 +70,6 @@ export const MentionTextarea = ({
           ))}
         </ul>
       )}
-    </>
+    </div>
   );
 };

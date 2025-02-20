@@ -36,10 +36,17 @@ export const useMentionDropdown = (
 
       if (textareaRef.current) {
         const rect = textareaRef.current.getBoundingClientRect();
+        const parentRect =
+          textareaRef.current.parentElement?.getBoundingClientRect() || {
+            top: 0,
+            left: 0,
+          };
+
         const lines = value.substring(0, cursorPos).split("\n");
         setCaretPosition({
-          top: rect.top + lines.length * 20,
-          left: rect.left + lines[lines.length - 1].length * 8,
+          top: rect.top - parentRect.top + lines.length * 20,
+          left:
+            rect.left - parentRect.left + lines[lines.length - 1].length * 8,
         });
       }
     } else {

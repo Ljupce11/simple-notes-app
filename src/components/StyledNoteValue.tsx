@@ -1,0 +1,14 @@
+export const StyledNoteValue = ({ value }: { value: string }) => {
+  const parts = value.split(/(@\w+)/g);
+  return parts.map((part, index) => {
+    const key = index + 1;
+    if (part.startsWith("@")) {
+      return (
+        <span key={key} style={{ backgroundColor: "yellow", padding: "2px" }}>
+          {part}
+        </span>
+      );
+    }
+    return <span key={key}>{part}</span>;
+  });
+};

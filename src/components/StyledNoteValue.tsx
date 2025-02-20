@@ -4,7 +4,7 @@ export const StyledNoteValue = ({ value }: { value: string }) => {
     const key = index + 1;
     if (part.startsWith("@")) {
       return (
-        <span key={key} style={{ backgroundColor: "yellow", padding: "2px" }}>
+        <span key={key} className="bg-yellow-200 px-[2px]">
           {part}
         </span>
       );

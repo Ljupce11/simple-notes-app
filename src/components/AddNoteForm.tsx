@@ -12,7 +12,11 @@ export const AddNoteForm = () => {
   return (
     <div className="flex justify-center">
       <div className="w-xl bg-white shadow-md rounded-lg p-4">
-        <form className="flex flex-col gap-1" onSubmit={createNote}>
+        <form
+          className="flex flex-col gap-1"
+          onSubmit={createNote}
+          aria-label="Add note"
+        >
           <MentionTextarea
             rows={5}
             disabled={isCreatingNote}

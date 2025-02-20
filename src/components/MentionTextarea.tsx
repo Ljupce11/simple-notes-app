@@ -52,6 +52,7 @@ export const MentionTextarea = ({
       />
       {showDropdown && (
         <ul
+          aria-label="User mentions suggestions"
           style={{
             top: caretPosition.top,
             left: caretPosition.left,
@@ -61,6 +62,7 @@ export const MentionTextarea = ({
           {filteredUsers.map((user, index) => (
             // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
             <li
+              aria-selected={selectedIndex === index}
               key={user}
               onClick={() => handleSelectUser(user)}
               className={`text-sm capitalize px-4 py-2 border-b border-gray-300 cursor-pointer hover:bg-gray-50 transition-colors ${selectedIndex === index ? "bg-gray-100" : ""}`}

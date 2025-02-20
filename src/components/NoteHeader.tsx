@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Link } from "react-router";
 
 import { ChevronLeftIcon } from "../icons/ChevronLeftIcon";
@@ -7,7 +8,7 @@ type Props = {
   saveError: string;
 };
 
-export const NoteHeader = ({ isSaving, saveError }: Props) => {
+export const NoteHeader = memo(({ isSaving, saveError }: Props) => {
   return (
     <div className="flex justify-between items-center">
       <div className="flex items-center gap-4">
@@ -23,4 +24,4 @@ export const NoteHeader = ({ isSaving, saveError }: Props) => {
       {saveError && <p className="text-sm text-red-500">{saveError}</p>}
     </div>
   );
-};
+});

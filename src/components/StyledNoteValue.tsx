@@ -1,4 +1,6 @@
-export const StyledNoteValue = ({ value }: { value: string }) => {
+import { memo } from "react";
+
+export const StyledNoteValue = memo(({ value }: { value: string }) => {
   const parts = value.split(/(@\w+)/g);
   return parts.map((part, index) => {
     const key = index + 1;
@@ -11,4 +13,4 @@ export const StyledNoteValue = ({ value }: { value: string }) => {
     }
     return <span key={key}>{part}</span>;
   });
-};
+});

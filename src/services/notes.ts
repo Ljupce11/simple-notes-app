@@ -4,7 +4,7 @@ interface CreateNotePayload {
   body: string;
 }
 
-const apiUrlWithSession = import.meta.env.VITE_API_URL_WITH_SESSION;
+const apiUrlWithSession = `${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_SESSION}`;
 
 export async function fetchNotes(): Promise<Note[]> {
   const response = await fetch(`${apiUrlWithSession}/notes`);

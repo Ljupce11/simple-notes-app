@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { calculateCaretPosition } from "../utils/caretUtils";
+import { filterUsers, findLastMentionIndex } from "../utils/mentionUtils";
 import { useUsers } from "./useUsers";
 
 export const useMentionDropdown = (
@@ -22,32 +24,18 @@ export const useMentionDropdown = (
     onChangeValue(value);
 
     const cursorPos = e.target.selectionStart;
-    const lastAtIndex = value.lastIndexOf("@", cursorPos - 1);
+    const lastAtIndex = findLastMentionIndex(value, cursorPos);
 
     if (lastAtIndex !== -1) {
       const searchQuery = value.substring(lastAtIndex + 1, cursorPos);
-      const filtered = users
-        .filter((user) =>
-          user.toLowerCase().startsWith(searchQuery.toLowerCase()),
-        )
-        .slice(0, 5);
+      const filtered = filterUsers(users, searchQuery, 5);
       setFilteredUsers(filtered);
       setShowDropdown(filtered.length > 0);
 
       if (textareaRef.current) {
-        const rect = textareaRef.current.getBoundingClientRect();
-        const parentRect =
-          textareaRef.current.parentElement?.getBoundingClientRect() || {
-            top: 0,
-            left: 0,
-          };
-
-        const lines = value.substring(0, cursorPos).split("\n");
-        setCaretPosition({
-          top: rect.top - parentRect.top + lines.length * 20,
-          left:
-            rect.left - parentRect.left + lines[lines.length - 1].length * 8,
-        });
+        setCaretPosition(
+          calculateCaretPosition(textareaRef.current, value, cursorPos),
+        );
       }
     } else {
       setShowDropdown(false);

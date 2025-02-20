@@ -19,6 +19,7 @@ A simple note-taking application built with React, TypeScript, and Vite that sup
 - React Router
 - Biome (for linting and formatting)
 - SWC (for fast compilation)
+- Vitest (for unit testing)
 
 ## Prerequisites
 
@@ -55,18 +56,20 @@ npm run dev
 - `npm run lint` - Runs Biome linter
 - `npm run format` - Formats code using Biome
 - `npm run tsc` - Runs TypeScript compiler
+- `npm run test` - Runs unit tests with Vitest
 
 ## Project Structure
 
 ```
 src/
-  ├── components/     # UI components
+  ├── components/    # UI components
   ├── context/       # React context providers
   ├── hooks/         # Custom React hooks
   ├── icons/         # SVG icons components
   ├── interfaces/    # TypeScript interfaces
   ├── pages/         # Route components
   ├── services/      # API service functions
+  ├── utils/         # Utility functions and test files
 ```
 
 ## Features in Detail

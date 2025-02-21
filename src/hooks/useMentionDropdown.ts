@@ -44,7 +44,7 @@ export const useMentionDropdown = (
 
   const handleSelectUser = (user: string) => {
     const cursorPos = textareaRef.current?.selectionStart || 0;
-    const lastAtIndex = textAreaValue.lastIndexOf("@", cursorPos - 1);
+    const lastAtIndex = findLastMentionIndex(textAreaValue, cursorPos);
 
     if (lastAtIndex !== -1) {
       const newText = `${textAreaValue.substring(0, lastAtIndex + 1)}${user} ${textAreaValue.substring(cursorPos)}`;
@@ -55,17 +55,24 @@ export const useMentionDropdown = (
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (showDropdown) {
-      if (e.key === "ArrowDown") {
-        e.preventDefault();
-        setSelectedIndex((prev) => (prev + 1) % filteredUsers.length);
-      } else if (e.key === "ArrowUp") {
-        e.preventDefault();
-        setSelectedIndex(
-          (prev) => (prev - 1 + filteredUsers.length) % filteredUsers.length,
-        );
-      } else if (e.key === "Enter") {
-        e.preventDefault();
-        handleSelectUser(filteredUsers[selectedIndex]);
+      switch (e.key) {
+        case "ArrowDown": {
+          e.preventDefault();
+          setSelectedIndex((prev) => (prev + 1) % filteredUsers.length);
+          break;
+        }
+        case "ArrowUp": {
+          e.preventDefault();
+          setSelectedIndex(
+            (prev) => (prev - 1 + filteredUsers.length) % filteredUsers.length,
+          );
+          break;
+        }
+        case "Enter": {
+          e.preventDefault();
+          handleSelectUser(filteredUsers[selectedIndex]);
+          break;
+        }
       }
     }
   };

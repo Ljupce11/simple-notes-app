@@ -1,3 +1,11 @@
+/**
+ * Calculates the position of the text cursor within a textarea
+ * @param textareaRef - Reference to the textarea HTML element
+ * @param value - Current text content of the textarea
+ * @param cursorPos - Current cursor position (character index) in the text
+ * @returns Position of the caret relative to its container
+ */
+
 interface CaretPosition {
   top: number;
   left: number;
